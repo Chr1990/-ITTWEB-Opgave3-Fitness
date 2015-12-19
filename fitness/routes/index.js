@@ -43,6 +43,12 @@ router.post('/login', passport.authenticate('local'), function(req, res, next) {
     });
 });
 
+router.get('/penis',passport.authenticate('local'), function(req,res,next){
+	res.render('penis' , {});
+}
+
+
+
 router.get('/logout', function(req, res, next) {
     req.logout();
     req.session.save(function (err) {
