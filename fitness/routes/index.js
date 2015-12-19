@@ -98,7 +98,7 @@ router.post('/workout/:workoutId/:done', function(req, res) {
 
 router.get('/certificate', isAuthenticated, function(req, res) {
 	var workouts = mongoose.model('workouts');
-	var query =  workouts.find({'userName':req.user.username})
+	var query =  workouts.find({'userName': req.user.username})
 	query.exec(function(err, workoutsData) {
 		var list;
 		for(var workout in workoutsData){
@@ -116,11 +116,31 @@ router.get('/exercises/:workdoutId', isAuthenticated, function(req, res) {
 	var query  = workouts.findOne({ '_id': req.params.workdoutId});
 	
 	query.exec(function(err, data) {
-       //if (err) return console.error(err);
 		var returnData = { 'workout': data};
-		console.log(returnData);
 		res.render('exercise', returnData);
     });
+});
+
+router.post('/exercises/:workdoutId/:exName/:exDescription/:numberOfSets/:repititionsOrTime', isAuthenticated, function(req, res) {
+	var workouts = mongoose.model('workouts');
+	
+	var query = workouts.findOne({ '_id': req.params.workdoutId});
+	
+	query.exec(function(err, workout) {
+		var exerciseModel = mongoose.model('exercises');
+		var exerciseToAdd = new exerciseModel({
+			'exerciseName' : req.params.exName,
+			'description' : req.params.exDescription,
+			'numberOfSets' : req.params.numberOfSets,
+			'repetitionsOrTime' : req.params.repititionsOrTime
+		});
+		console.log(exerciseToAdd);
+		
+		workout.exercises.push(exerciseToAdd)
+		workout.save(function (err, obj) {
+			res.end("yes");
+		});
+	});
 });
 
 router.delete('/exercises/:workoutId/:exName', function(req, res) {

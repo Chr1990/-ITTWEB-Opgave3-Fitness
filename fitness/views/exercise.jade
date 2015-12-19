@@ -22,18 +22,25 @@ block content
             //input.btn-link(type='button' onclick='deleteEx("#{exercise.exerciseName}","#{workout._id}")' value='delete')
   h2= "New exercise"
   .col-md-2
-      input.form-control#exerciseNameInput(type='text',placeholder='Exercise name')
+      input.form-control#exNameInput(type='text',placeholder='Exercise name')
   .col-md-2
-      input.form-control#exerciseDescriptionInput(type='text',placeholder='Description')
+      input.form-control#exDescriptionInput(type='text',placeholder='Description')
   .col-md-2 
       input.form-control#numberOfSetsInput(type='number',placeholder='Sets')
   .col-md-2
-      input.form-control#repsOrTimeInput(type='text',placeholder='Repetitions/Time')
+      input.form-control#repititionsOrTimeInput(type='text',placeholder='Repetitions/Time')
   .col-md-2
-      button.btn.btn-primary(onclick='AddExercise()') Add
+      button.btn.btn-primary(onclick='newExercise("#{workout._id}", $("#exNameInput").val(), $("#exDescriptionInput").val(), $("#numberOfSetsInput").val(), $("#repititionsOrTimeInput").val())') Add
   
-  script.    
-    var deleteEx = function(exName,workoutId) {
+  script.
+    var newExercise = function(workoutId, exName, exDescription, numberOfSets, repetitionsOrTime) {
+      console.log("LOL");
+      $.post("/exercises/" + workoutId + "/" + exName + "/" + exDescription + "/" + numberOfSets + "/" + repetitionsOrTime, function() {
+        location.reload();
+      });
+    }  
+    
+    var deleteEx = function(exName, workoutId) {
       $.ajax({
         url: '/exercises/' + workoutId + '/' + exName,
         type: 'DELETE',
