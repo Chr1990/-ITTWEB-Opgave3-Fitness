@@ -34,6 +34,16 @@ router.get('/login', function(req, res) {
     res.render('login', { user : req.user });
 });
 
+router.get('/exercises', isAuthenticated, function(req, res) {
+	var workouts = mongoose.model('workouts');
+	
+	workouts.findOne( {'userName' : req.user.username }, function(err, exercisesData) {
+       if (err) return console.error(err);
+	   
+       res.render('exercises', { exercises: exercisesData, user: req.user });
+    });
+});
+
 router.post('/login', passport.authenticate('local'), function(req, res, next) {
     req.session.save(function (err) {
         if (err) {
