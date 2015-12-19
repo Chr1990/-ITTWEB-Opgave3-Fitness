@@ -73,7 +73,14 @@ router.get('/workout', isAuthenticated, function(req, res) {
 		res.render('workout', data);
 	});
 });
-
+router.get('/certificate', isAuthenticated, function(req, res) {
+	var workouts = mongoose.model('workouts');
+	
+	workouts.find().where('userName').equals(req.user.username).exec(function(err, workoutsData) {
+		var data = { 'workouts': workoutsData, 'user': req.user };
+		res.render('certificate', data);
+	});
+});
 router.get('/ping', function(req, res) {
 	res.status(200).send(req.user);
 });
