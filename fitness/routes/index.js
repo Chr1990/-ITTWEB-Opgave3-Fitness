@@ -76,8 +76,11 @@ router.get('/workout', isAuthenticated, function(req, res) {
 router.get('/certificate', isAuthenticated, function(req, res) {
 	var workouts = mongoose.model('workouts');
 	
-	workouts.find().where('userName').equals(req.user.username).exec(function(err, workoutsData) {
+	workouts.find().where('userName',req.user.username)
+				   //.where('done', true)
+				   .exec(function(err, workoutsData) {
 		var data = { 'workouts': workoutsData, 'user': req.user };
+		console.log(data);
 		res.render('certificate', data);
 	});
 });
