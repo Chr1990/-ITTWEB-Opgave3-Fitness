@@ -3,9 +3,9 @@ extends layout
 block content
   .container
     if (!user)
-      p Welcome
+      h1 Welcome
       p Please login to enter the fitness app
     if (user)
-      p Welcome to fitness app
+      h1 Welcome to fitness app
       br
       p You are currently logged in as #{user.username}

@@ -21,12 +21,14 @@ html
               a(href='/') Home
             li
               a(href='/penis') Training
-            li
-              if(user)
-               a #{user.username}
+    
           ul.nav.navbar-nav.navbar-right
             if(user)
               li
+                if(user)
+                  a 
+                     b #{user.username}
+            li
                 a(href='/logout') Logout
             if(!user)
               li
