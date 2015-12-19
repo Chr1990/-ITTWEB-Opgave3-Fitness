@@ -29,7 +29,6 @@ router.post('/register', function(req, res, next) {
     });
 });
 
-
 router.get('/login', function(req, res) {
     res.render('login', { user : req.user });
 });
@@ -43,10 +42,22 @@ router.post('/login', passport.authenticate('local'), function(req, res, next) {
     });
 });
 
-router.get('/penis',passport.authenticate('local'), function(req,res,next){
-	res.render('penis' , {});
-}
 
+
+router.get('/penis', isAuthenticated, function(req, res) {
+			res.render('Penis', { user : req.user });
+    });
+
+function isAuthenticated(req, res, next) {
+    // do any checks you want to in here
+
+    // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
+    // you can do this however you want with whatever variables you set up
+    if (req.user)
+        return next();
+    // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
+    res.redirect('/login');
+}
 
 
 router.get('/logout', function(req, res, next) {
