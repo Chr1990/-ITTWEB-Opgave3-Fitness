@@ -22,11 +22,13 @@ html
             li
               a(href='/workout') Workout
             li
-              if(user)
-               a #{user.username}
           ul.nav.navbar-nav.navbar-right
             if(user)
               li
+                if(user)
+                  a 
+                     b #{user.username}
+            li
                 a(href='/logout') Logout
             if(!user)
               li
