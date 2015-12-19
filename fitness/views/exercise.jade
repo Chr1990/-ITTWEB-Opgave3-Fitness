@@ -18,8 +18,8 @@ block content
           td= exercise.description
           td= exercise.numberOfSets
           td= exercise.repetitionsOrTime
-          td
-            input.btn-link(type='button' value='delete')
+          //td
+            //input.btn-link(type='button' onclick='deleteEx("#{exercise.exerciseName}","#{workout._id}")' value='delete')
   h2= "New exercise"
   .col-md-2
       input.form-control#exerciseNameInput(type='text',placeholder='Exercise name')
@@ -32,4 +32,13 @@ block content
   .col-md-2
       button.btn.btn-primary(onclick='AddExercise()') Add
   
-
+  script.    
+    var deleteEx = function(exName,workoutId) {
+      $.ajax({
+        url: '/exercises/' + workoutId + '/' + exName,
+        type: 'DELETE',
+        success: function(result) {
+          location.reload();
+        }
+      });
+    }

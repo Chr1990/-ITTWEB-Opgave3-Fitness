@@ -33,18 +33,6 @@ router.get('/login', function(req, res) {
     res.render('login', { user : req.user });
 });
 
-router.get('/exercises/:workdoutId', isAuthenticated, function(req, res) {
-	var workouts = mongoose.model('workouts');
-	var query  = workouts.findOne({ '_id': req.params.workdoutId});
-	
-	query.exec(function(err, data) {
-       //if (err) return console.error(err);
-		var returnData = { 'workout': data};
-		console.log(returnData);
-		res.render('exercise', returnData);
-    });
-});
-
 router.post('/login', passport.authenticate('local'), function(req, res, next) {
     req.session.save(function (err) {
         if (err) {
@@ -109,6 +97,30 @@ router.get('/certificate', isAuthenticated, function(req, res) {
 		}
 		var data = { 'workouts': workoutsData, 'user': req.user };
 		res.render('certificate', data);
+	});
+});
+
+router.get('/exercises/:workdoutId', isAuthenticated, function(req, res) {
+	var workouts = mongoose.model('workouts');
+	var query  = workouts.findOne({ '_id': req.params.workdoutId});
+	
+	query.exec(function(err, data) {
+       //if (err) return console.error(err);
+		var returnData = { 'workout': data};
+		console.log(returnData);
+		res.render('exercise', returnData);
+    });
+});
+
+router.delete('/exercises/:workoutId/:exName', function(req, res) {
+	var workouts = mongoose.model('workouts');
+	console.log(req.params.workoutId);
+	console.log(req.params.exName);
+	workouts.update( { _id: req.params.workoutId },
+			{ $pullAll: { 'exercises': { exerciseName: req.params.exName } } }
+			);
+	query.exec(function(err, obj) {	
+		res.end("yes");
 	});
 });
 
