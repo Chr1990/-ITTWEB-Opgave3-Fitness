@@ -4,7 +4,6 @@ var passport = require('passport');
 var Account = require('../models/account');
 var router = express.Router();
 
-
 router.get('/', function (req, res) {
     res.render('index', { user : req.user });
 });
@@ -59,6 +58,30 @@ router.get('/workout', isAuthenticated, function(req, res) {
 	workouts.find().where('userName').equals(req.user.username).exec(function(err, workoutsData) {
 		var data = { 'workouts': workoutsData, 'user': req.user };
 		res.render('workout', data);
+	});
+});
+
+router.post('/workout/:workoutName', function(req, res) {
+    var workouts = mongoose.model('workouts');
+	
+	var newWorkoutObj = {
+		'userName': req.user.username,
+		'workoutName': req.params.workoutName,
+		'done': false,
+		'exercises': [],
+	}
+	var newWorkout = new workouts(newWorkoutObj);
+	newWorkout.save(function(error, obj) {
+		res.end("yes");
+	});
+});
+
+router.delete('/workout/:workoutId', function(req, res) {
+	var workouts = mongoose.model('workouts');
+	
+	var deleteWorkoutIdObj = { '_id': mongoose.Types.ObjectId(req.params.workoutId) };
+	workouts.findByIdAndRemove(deleteWorkoutIdObj, function(err, obj) {	
+		res.end("yes");
 	});
 });
 
