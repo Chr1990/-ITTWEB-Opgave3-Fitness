@@ -1,14 +1,16 @@
 extends layout
 
 block content
-  h1= "Workout programs"
+  h1= "Workouts"
+
   button.btn.btn-primary.col-md-2(onclick='location.replace("/certificate/")') Make certificate
+
   table.table
     thead
       tr
-        th= "Name"
-        th= "Number of exercises"
-        th= "Done"
+        th= "Workout name"
+        th= "# exercises"
+        th= "Completed"
         th= "Delete"
         
     tbody
@@ -20,20 +22,27 @@ block content
           td 
             input(type='checkbox')
           td
-            input.btn-link(type='button' value='delete')
+            input.btn-link(type='button' onclick='deleteWorkout("#{workout._id}")' value='delete')
 
-  h2= "Add new workout program"
-  .input-group.col-md-4
-    input.form-control#workoutInputId(type = 'text', placeholder = 'Workout program name', aria-describedby = 'basic-addon2')
-    span.input-group-addon#basic-addon2(onclick='AddWorkout()') Add
+  h2= "Add new workout"
+  .input-group.col-md-3
+    input.form-control#newWorkoutNameInputId(type = 'text', placeholder = 'New workout name')
+    span.input-group-addon(onclick='addWorkout()') Add
   
   script.
-    var AddWorkout = function() {
-      var workoutName = $("#workoutInputId").val();
-       $.post( "/workout/"+workoutName, function() {
-         location.reload();
-       });
+    var addWorkout = function() {
+      var workoutName = $("#newWorkoutNameInputId").val();
+      $.post( "/workout/" + workoutName, function() {
+        location.reload();
+      });
     }
-
-
-
+    
+    var deleteWorkout = function(workoutId) {
+      $.ajax({
+        url: '/workout/' + workoutId,
+        type: 'DELETE',
+        success: function(result) {
+          location.reload();
+        }
+      });
+    }
