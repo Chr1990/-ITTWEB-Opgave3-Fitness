@@ -85,6 +85,17 @@ router.delete('/workout/:workoutId', function(req, res) {
 	});
 });
 
+router.post('/workout/:workoutId/:done', function(req, res) {
+	var workouts = mongoose.model('workouts');
+	
+	workouts.findOne({'id_': req.params.workdoutId}, function(err, workout) {
+		workout.done = req.params.done;
+		workout.save();
+	});
+	
+	res.end("yes");
+});
+
 router.get('/certificate', isAuthenticated, function(req, res) {
 	var workouts = mongoose.model('workouts');
 	var query =  workouts.find({'userName':req.user.username})

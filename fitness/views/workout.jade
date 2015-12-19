@@ -20,7 +20,7 @@ block content
             a(href="/exercises/" + workout._id)=workout.workoutName
           td= workout.exercises.length
           td 
-            input(type='checkbox')
+            input(type='checkbox' onclick='changeDone("#{workout._id}", this.checked)' checked=workout.done)
           td
             input.btn-link(type='button' onclick='deleteWorkout("#{workout._id}")' value='delete')
 
@@ -32,7 +32,7 @@ block content
   script.
     var addWorkout = function() {
       var workoutName = $("#newWorkoutNameInputId").val();
-      $.post( "/workout/" + workoutName, function() {
+      $.post("/workout/" + workoutName, function() {
         location.reload();
       });
     }
@@ -44,5 +44,11 @@ block content
         success: function(result) {
           location.reload();
         }
+      });
+    }
+    
+    var changeDone = function(workoutId, done) {
+      $.post("/workout/" + workoutId + "/" + done, function() {
+	    
       });
     }
