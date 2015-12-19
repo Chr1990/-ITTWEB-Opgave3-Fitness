@@ -3,7 +3,35 @@ extends layout
 block content
   h1= "Workout programs"
   
+  table.table
+    thead
+      tr
+        th= "Name"
+        th= "Number of exercises"
+        th= "Done"
+        th= "Delete"
+        
+    tbody
+      each workout in workouts
+        tr
+          td
+            a(href="/exercises/" + workout._id)=workout.workoutName
+          td= workout.exercises.length
+          td 
+            input(type='checkbox')
+          td
+            input.btn-link(type='button' value='delete')
+
+  h2= "Add new workout program"
+  .input-group.col-md-4
+    input.form-control#workoutInputId(type = 'text', placeholder = 'Workout program name', aria-describedby = 'basic-addon2')
+    span.input-group-addon#basic-addon2(onclick='AddWorkout()') Add
+  
   script.
-    console.log(workouts);
-  
-  
+    var AddWorkout = function() {
+      var workoutName = $("#workoutInputId").val();
+       $.post( "/workout/"+workoutName, function() {
+         location.reload();
+       });
+    }
+>>>>>>> origin/master
