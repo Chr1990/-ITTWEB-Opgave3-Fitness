@@ -1,5 +1,35 @@
 extends layout
 
 block content
-  .container
-    p Penis oh mighty pernis
+  h1= workout.workoutName
+  
+  table.table
+    thead
+      tr
+        th= "Name"
+        th= "Description"
+        th= "Sets"
+        th= "Repetition/Time"
+        
+    tbody
+      each exercise in workout.exercises
+        tr
+          td= exercise.exerciseName
+          td= exercise.description
+          td= exercise.numberOfSets
+          td= exercise.repetitionsOrTime
+          td
+            input.btn-link(type='button' value='delete')
+  h2= "New exercise"
+  .col-md-2
+      input.form-control#exerciseNameInput(type='text',placeholder='Exercise name')
+  .col-md-2
+      input.form-control#exerciseDescriptionInput(type='text',placeholder='Description')
+  .col-md-2 
+      input.form-control#numberOfSetsInput(type='number',placeholder='Sets')
+  .col-md-2
+      input.form-control#repsOrTimeInput(type='text',placeholder='Repetitions/Time')
+  .col-md-2
+      button.btn.btn-primary(onclick='AddExercise()') Add
+  
+
