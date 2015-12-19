@@ -10,3 +10,22 @@ var Account = new Schema({
 Account.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('accounts', Account);
+
+/////////////////////////////////////////////
+
+var workoutSchema = mongoose.Schema({
+	userName: String,
+	workoutName: String,
+	done: Boolean,
+	exercises:  Array
+});
+
+var exerciseSchema = mongoose.Schema({
+	exerciseName: String,
+	description: String,
+	numberOfSets: Number,
+	repetitionsOrTime: String
+});
+
+var workoutProgram = mongoose.model('workouts', workoutSchema);
+var exercise = mongoose.model('exercises', exerciseSchema);

@@ -1,4 +1,5 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var passport = require('passport');
 var Account = require('../models/account');
 var router = express.Router();
@@ -42,11 +43,31 @@ router.post('/login', passport.authenticate('local'), function(req, res, next) {
     });
 });
 
-
-
-router.get('/penis', isAuthenticated, function(req, res) {
-			res.render('Penis', { user : req.user });
+router.get('/logout', function(req, res, next) {
+    req.logout();
+    req.session.save(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
     });
+});
+
+router.get('/workout', isAuthenticated, function(req, res) {
+	var workouts = mongoose.model('workouts');
+	
+	console.log(workouts);
+	
+	workouts.findOne( {'userName' : req.user.username }, function(err, workoutsData) {
+       if (err) return console.error(err);
+	   
+       res.render('workout', { workouts: workoutsData, user: req.user });
+    });
+});
+
+router.get('/ping', function(req, res) {
+	res.status(200).send(req.user);
+});
 
 function isAuthenticated(req, res, next) {
     // do any checks you want to in here
@@ -58,20 +79,5 @@ function isAuthenticated(req, res, next) {
     // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
     res.redirect('/login');
 }
-
-
-router.get('/logout', function(req, res, next) {
-    req.logout();
-    req.session.save(function (err) {
-        if (err) {
-            return next(err);
-        }
-        res.redirect('/');
-    });
-});
-
-router.get('/ping', function(req, res){
-    res.status(200).send("pong!");
-});
 
 module.exports = router;
