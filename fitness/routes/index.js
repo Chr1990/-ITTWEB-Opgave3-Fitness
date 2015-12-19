@@ -56,22 +56,10 @@ router.get('/logout', function(req, res, next) {
 router.get('/workout', isAuthenticated, function(req, res) {
 	var workouts = mongoose.model('workouts');
 	
-	//console.log(workouts);
-	
 	workouts.find().where('userName').equals(req.user.username).exec(function(err, workoutsData) {
-       //if (err) return console.error(err);
-	   
-	   console.log("--- WORKOUT DATA ---");
-	   console.log(workoutsData);
-	   
-	   console.log("--- USER ---");
-	   console.log(req.user);
-	   
-	   var lort = { 'workouts': workoutsData, 'user': req.user };
-	   
-       res.render('workout', lort);
-       //res.render('workout', { 'bullshit': 'ffs' });
-    });
+		var data = { 'workouts': workoutsData, 'user': req.user };
+		res.render('workout', data);
+	});
 });
 
 router.get('/ping', function(req, res) {
