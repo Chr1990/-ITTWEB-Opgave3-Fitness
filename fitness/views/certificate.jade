@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title= Fitness
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    h1 Your certificate !! 
+    h2 Congratulations #{user.username}
+    table.table
+      thead
+        tr
+          th= "Name"
+          th= "Number of exercises"
+        
+      tbody
+        each workout in workouts
+          tr
+            td
+              a(href="/exercises/" + workout._id)=workout.workoutName
+            td= workout.exercises.length
+
+  script(src='http://code.jquery.com/jquery.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js')
+

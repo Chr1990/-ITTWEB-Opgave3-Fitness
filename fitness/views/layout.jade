@@ -24,11 +24,10 @@ html
             li
           ul.nav.navbar-nav.navbar-right
             if(user)
-              li
-                if(user)
+               li
                   a 
                      b #{user.username}
-            li
+               li
                 a(href='/logout') Logout
             if(!user)
               li

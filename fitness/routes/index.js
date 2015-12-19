@@ -33,6 +33,18 @@ router.get('/login', function(req, res) {
     res.render('login', { user : req.user });
 });
 
+router.get('/exercises/:workdoutId', isAuthenticated, function(req, res) {
+	var workouts = mongoose.model('workouts');
+	var query  = workouts.findOne({ '_id': req.params.workdoutId});
+	
+	query.exec(function(err, data) {
+       //if (err) return console.error(err);
+		var returnData = { 'workout': data};
+		console.log(returnData);
+		res.render('exercise', returnData);
+    });
+});
+
 router.post('/login', passport.authenticate('local'), function(req, res, next) {
     req.session.save(function (err) {
         if (err) {
@@ -82,6 +94,15 @@ router.delete('/workout/:workoutId', function(req, res) {
 	var deleteWorkoutIdObj = { '_id': mongoose.Types.ObjectId(req.params.workoutId) };
 	workouts.findByIdAndRemove(deleteWorkoutIdObj, function(err, obj) {	
 		res.end("yes");
+	});
+});
+
+router.get('/certificate', isAuthenticated, function(req, res) {
+	var workouts = mongoose.model('workouts');
+	
+	workouts.find().where('userName').equals(req.user.username).exec(function(err, workoutsData) {
+		var data = { 'workouts': workoutsData, 'user': req.user };
+		res.render('certificate', data);
 	});
 });
 
